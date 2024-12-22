@@ -177,8 +177,10 @@
   :diminish projectile-mode
   :init (projectile-mode +1)
   :custom ((projectile-completion-system 'ivy))
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
+  :config
+  (leslie/leader-keys
+    "p"  '(:ignore t :which-key "projectile")  ;; Create a "projectile" prefix under SPC
+    "pp" '(projectile-command-map :which-key "projectile commands"))
   :init
   (setq projectile-project-search-path '("~/Desktop/codings")
 	projectile-switch-project-action #'projectile-dired)
@@ -204,7 +206,19 @@
   :after iedit
   :config
   ;; Automatically activate evil-iedit-state in iedit-mode
-  (add-hook 'iedit-mode-hook 'evil-iedit-state))
+  (add-hook 'iedit-mode-hook 'evil-iedit-state)
+  (leslie/leader-keys
+    "s"  '(:ignore t :which-key "iedit")  ;; Create an "iedit" prefix under SPC s
+    "se" '(iedit-mode :which-key "iedit-mode")
+    )
+  )
+
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
+
+(use-package wgrep)
+
 
 (toggle-frame-fullscreen)
-
