@@ -57,7 +57,8 @@
   )
 
 (use-package counsel
-    :bind (("M-x" . counsel-M-x)
+  :bind (
+	 ("M-x" . counsel-M-x)
          ("C-x C-f" . counsel-find-file)
          ("C-c k" . counsel-rg)
 	 ("C-x b" . counsel-ibuffer)
@@ -182,7 +183,8 @@
     "p"  '(:ignore t :which-key "projectile")  ;; Create a "projectile" prefix under SPC
     "pp" '(projectile-command-map :which-key "projectile commands"))
   :init
-  (setq projectile-project-search-path '("~/Desktop/codings")
+  (setq
+        projectile-project-search-path '("~/Desktop/codings")
 	projectile-switch-project-action #'projectile-dired)
 )
 
@@ -214,11 +216,31 @@
   )
 
 (use-package exec-path-from-shell
-  :ensure t
+  
   :config
   (exec-path-from-shell-initialize))
 
+
+(leslie/leader-keys
+"f"  '(:ignore t :which-key "buffer")  ;; Create an "iedit" prefix under SPC s
+"fs" '(save-buffer :which-key "save")
+)
+
 (use-package wgrep)
 
+(use-package treemacs)
+
+
+(use-package treemacs-evil
+  :after (treemacs evil))
+
+(use-package treemacs-projectile
+  :after (treemacs projectile))
+
+(use-package treemacs-icons-dired
+  :hook (dired-mode . treemacs-icons-dired-enable-once))
+
+(use-package treemacs-magit
+  :after (treemacs magit))
 
 (toggle-frame-fullscreen)
