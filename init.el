@@ -161,7 +161,7 @@
 
 (leslie/leader-keys
   "t" '(:ignore t :which-key "toggle")
-  "tt" '(counsel-load-theme :which-key "choose theme"))
+  "tt" '(treemacs :which-key "Treemacs"))
 
 (use-package hydra)
 
@@ -242,5 +242,12 @@
 
 (use-package treemacs-magit
   :after (treemacs magit))
+
+(use-package jupyter
+  :config
+  (setq
+   jupyter-repl-echo-eval-p t))
+
+(use-package ein)
 
 (toggle-frame-fullscreen)
