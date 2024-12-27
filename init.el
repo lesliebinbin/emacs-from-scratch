@@ -5,6 +5,7 @@
                          ("org" . "https://orgmode.org/elpa/")
                          ("elpa" . "https://elpa.gnu.org/packages/"))
 )
+
 (scroll-bar-mode nil)
 (tool-bar-mode nil)
 (tooltip-mode nil)
@@ -82,11 +83,14 @@
 
 (column-number-mode)
 (global-display-line-numbers-mode t)
+
 (dolist (mode '(org-mode-hook
 		term-mode-hook
 		shell-mode-hook
-		eshell-mode-hook))
+		eshell-mode-hook
+		treemacs-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -266,15 +270,33 @@
 (use-package typescript-mode
   :hook (typescript-mode . lsp-deferred))
 
-(use-package lsp-ui)
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom (lsp-ui-doc-position 'bottom))
 
-(use-package lsp-treemacs)
-
-(use-package consult-lsp)
+(use-package lsp-treemacs
+  :after lsp)
 
 (use-package lsp-ivy)
 
-(use-package company)
+(use-package company
+  :after lsp-mode
+  :hook (lsp-mode . company-mode)
+  :bind
+  (:map company-active-map
+	("<tab>" . company-complete-selection))
+  (:map lsp-mode-map
+	("<tab>" . company-indent-or-complete-common))
+  :custom
+  (company-mini-prefix-length 1)
+  (company-idle-delay 0.0)
+)
 
+(use-package company-box
+  :hook (company-mode . company-box-mode))
+
+(use-package evil-nerd-commenter)
+
+(evilnc-default-hotkeys)
 
 (toggle-frame-fullscreen)
