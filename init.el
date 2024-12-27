@@ -250,4 +250,31 @@
 
 (use-package ein)
 
+(use-package python-mode)
+
+(defun leslie/lsp-mode-setup ()
+    (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+    (lsp-headerline-breadcrumb-mode))
+
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook (lsp-mode . leslie/lsp-mode-setup)
+  :init (setq lsp-keymap-prefix "C-c l")
+  :config (lsp-enable-which-key-integration t)
+  )
+
+(use-package typescript-mode
+  :hook (typescript-mode . lsp-deferred))
+
+(use-package lsp-ui)
+
+(use-package lsp-treemacs)
+
+(use-package consult-lsp)
+
+(use-package lsp-ivy)
+
+(use-package company)
+
+
 (toggle-frame-fullscreen)
