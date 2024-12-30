@@ -4,6 +4,7 @@
       package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("org" . "https://orgmode.org/elpa/")
                          ("elpa" . "https://elpa.gnu.org/packages/"))
+      use-package-verbose t
 )
 
 (scroll-bar-mode nil)
@@ -189,9 +190,7 @@
     "p"  '(:ignore t :which-key "projectile")  ;; Create a "projectile" prefix under SPC
     "pp" '(projectile-command-map :which-key "projectile commands"))
   :init
-  (setq
-        projectile-project-search-path '("~/Desktop/codings")
-	projectile-switch-project-action #'projectile-dired)
+  (setq projectile-switch-project-action #'projectile-dired)
 )
 
 (use-package counsel-projectile
@@ -256,18 +255,25 @@
 
 (use-package ein)
 
-(use-package python-mode)
-
 (defun leslie/lsp-mode-setup ()
     (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
     (lsp-headerline-breadcrumb-mode))
+
+(use-package yasnippet)
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :hook (lsp-mode . leslie/lsp-mode-setup)
   :init (setq lsp-keymap-prefix "C-c l")
-  :config (lsp-enable-which-key-integration t)
-  )
+  :config (lsp-enable-which-key-integration t))
+
+(defun leslie/dap-mode-config ()
+  (require 'dap-python)
+  (setq dap-python-debugger 'debugpy)
+  (require 'dap-node)
+  (dap-node-setup)
+  (require 'dap-chrome)
+  (dap-chrome-setup))
 
 (use-package dap-mode
   ;; :hook (dap-stopped . (lambda (arg) (call-interactively #'dap-hydra)))
@@ -278,15 +284,16 @@
   (general-define-key
    :keymaps 'lsp-mode-map
    :prefix lsp-keymap-prefix
-   "d" '(dap-hydra t :wk "debugger")))
+   "d" '(dap-hydra t :wk "debugger"))
+  (leslie/dap-mode-config))
+
+
+
+(use-package python-mode
+  :hook (python-mode . lsp-deferred))
 
 (use-package typescript-mode
-  :hook (typescript-mode . lsp-deferred)
-  :config
-  (require 'dap-node)
-  (dap-node-setup)
-  (require 'dap-chrome)
-  (dap-chrome-setup))
+  :hook (typescript-mode . lsp-deferred))
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
