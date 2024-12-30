@@ -121,6 +121,8 @@
 
 (use-package all-the-icons)
 
+(use-package nerd-icons)
+
 (use-package all-the-icons-dired
   :hook (dired-mode . all-the-icons-dired-mode))
 
@@ -267,8 +269,24 @@
   :config (lsp-enable-which-key-integration t)
   )
 
+(use-package dap-mode
+  ;; :hook (dap-stopped . (lambda (arg) (call-interactively #'dap-hydra)))
+  :custom
+  (lsp-enable-dap-auto-configure nil)
+  :config
+  (dap-ui-mode t)
+  (general-define-key
+   :keymaps 'lsp-mode-map
+   :prefix lsp-keymap-prefix
+   "d" '(dap-hydra t :wk "debugger")))
+
 (use-package typescript-mode
-  :hook (typescript-mode . lsp-deferred))
+  :hook (typescript-mode . lsp-deferred)
+  :config
+  (require 'dap-node)
+  (dap-node-setup)
+  (require 'dap-chrome)
+  (dap-chrome-setup))
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
@@ -298,5 +316,6 @@
 (use-package evil-nerd-commenter)
 
 (evilnc-default-hotkeys)
+
 
 (toggle-frame-fullscreen)
