@@ -6,12 +6,15 @@
                          ("elpa" . "https://elpa.gnu.org/packages/"))
 )
 
+
 (scroll-bar-mode nil)
 (tool-bar-mode nil)
 (tooltip-mode nil)
 (set-fringe-mode 10)
 
 (set-face-attribute 'default nil :font "Lucida Console" :height 180)
+
+(add-to-list 'load-path "/Users/zhibinhuang/Desktop/codings/mycustom-load-path")
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
@@ -298,5 +301,13 @@
 (use-package evil-nerd-commenter)
 
 (evilnc-default-hotkeys)
+
+
+(use-package ultra-scroll
+  :init
+  (setq scroll-conservatively 101 ; important!
+        scroll-margin 0) 
+  :config
+  (ultra-scroll-mode t))
 
 (toggle-frame-fullscreen)
